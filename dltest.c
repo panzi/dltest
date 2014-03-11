@@ -8,7 +8,10 @@ void usage(int argc, const char *argv[]) {
 }
 
 int parse_args(int argc, const char *argv[], const char **lib, int *flags, int *symind) {
-	if (argc < 2) return 0;
+	if (argc < 2) {
+		fprintf(stderr, "*** error: missing library argument\n");
+		return 0;
+	}
 	*lib = argv[1];
 
 	int i = 2;
@@ -18,7 +21,7 @@ int parse_args(int argc, const char *argv[], const char **lib, int *flags, int *
 		const char *arg = argv[i];
 		if (arg[0] != '-') break;
 
-		if (strcmp(arg,"--")) {
+		if (strcmp(arg,"--") == 0) {
 			++ i;
 			break;
 		}
@@ -57,7 +60,7 @@ int parse_args(int argc, const char *argv[], const char **lib, int *flags, int *
 		}
 #endif
 		else {
-			fprintf(stderr, "unknown option: %s\n", arg);
+			fprintf(stderr, "*** error: unknown option '%s'\n", arg);
 			return 0;
 		}
 	}
